@@ -1,0 +1,126 @@
+
+Yolov5
+https://docs.ultralytics.com/quick-start/
+
+# number of classes
+nc: 80
+
+# class names
+names: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
+        'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
+        'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
+        'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard',
+        'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+        'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
+        'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 
+        'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 
+        'teddy bear', 'hair drier', 'toothbrush']
+
+
+names: ["человек", "велосипед", "автомобиль", "мотоцикл", "самолет", "автобус", "поезд", "грузовик", "лодка", "светофор",
+        пожарный гидрант", "знак остановки", "парковочный счетчик", "скамейка", "птица", "кошка", "собака", "лошадь", "овца", "корова",
+        слон, медведь, зебра, жираф, рюкзак, зонт, сумка, галстук, чемодан, фрисби,
+        лыжи", "сноуборд", "спортивный мяч", "воздушный змей", "бейсбольная бита", "бейсбольная перчатка", "скейтборд", "доска для серфинга",
+        теннисная ракетка", "бутылка", "бокал для вина", "чашка", "вилка", "нож", "ложка", "миска", "банан", "яблоко",
+        сэндвич", "апельсин", "брокколи", "морковь", "хот-дог", "пицца", "пончик", "торт", "стул", "диван",
+        комнатное растение", 'кровать', 'обеденный стол', 'туалет', 'телевизор', 'ноутбук', 'мышь', 'пульт', 'клавиатура', 
+        мобильный телефон", "микроволновая печь", "духовка", "тостер", "раковина", "холодильник", "книга", "часы", "ваза", "ножницы", 
+        плюшевый мишка", "фен", "зубная щетка"]
+
+
+=========================================================
+ВИДЕО
+https://www.youtube.com/watch?v=7gz3vUmy0C0
+
+Yolov5_DeepSort_Pytorch
+
+------------------------------------------------
+######## ИЛИ ЮПИТЕР (JupyterLab) нужно запускать из командной строки
+### Там где планируется использовать !!!
+
+(base) C:\Users\Anj>conda activate py38
+(py38) C:\Users\Anj\jupyter-lab
+---------------------------------------
+
+####  ч/з ТЕРМИНАЛ в jupyter-lab
+PS C:\Users\Anj> git clone https://github.com/mikel-brostrom/Yolov5_DeepSort_Pytorch.git
+
+# Переходим в директорию проекта
+PS C:\Users\Anj> cd Yolov5_DeepSort_Pytorch
+
+
+PS C:\Users\Anj\Yolov5_DeepSort_Pytorch> git clone https://github.com/ultralytics/yolov5.git
+
+
+# Устанавливаем все необходимые зависимости
+PS C:\Users\Anj\Yolov5_DeepSort_Pytorch> pip install -r requirements.txt
+
+# Если будет варнинг WARNING, то запустить git submodule update --init
+PS C:\Users\Anj\Yolov5_DeepSort_Pytorch> git submodule update --init
+
+--------------------------------------------
+# Запуск Трекинга по видео
+PS C:\Users\Anj\Yolov5_DeepSort_Pytorch>python track.py
+
+===================================================================
+==========================================================================
+
+# (в colab)Копируем репозиторий
+!git clone --recurse-submodules https://github.com/mikel-brostrom/Yolov5_DeepSort_Pytorch.git
+
+# (в colab)Переходим в директорию проекта
+%cd Yolov5_DeepSort_Pytorch
+
+# (в colab)Устанавливаем все необходимые зависимости
+%pip install -qr requirements.txt
+
+# (в colab) Импорт библиотек
+import torch
+from IPython.display import Image, clear_output  # to display images
+
+# Очистка экрана
+clear_output()
+---------------------
+
+# (в colab) Создание папки для сохранения весов YOLO
+import os
+os.mkdir('/content/Yolov5_DeepSort_Pytorch/yolov5/weights')
+
+# (в colab) Скачиваем веса для YOLOv5
+!wget -nc https://github.com/mikel-brostrom/Yolov5_DeepSort_Pytorch/releases/download/v.2.0/crowdhuman_yolov5m.pt -O /content/Yolov5_DeepSort_Pytorch/yolov5/weights/crowdhuman_yolov5m.pt
+
+# (в colab)  Скачиваем тестовое видео 
+!wget -nc https://github.com/mikel-brostrom/Yolov5_DeepSort_Pytorch/releases/download/v.2.0/test.avi
+
+# (в colab)  Сохраним первые 5 секунд в отдельный файл
+!y | ffmpeg -ss 00:00:00 -i test.avi -t 00:00:05 -c copy out.avi
+
+# Запуск (в colab) Трекинга с Весами для Людей и СОХРАНЕНИЕ
+!python track.py --yolo_model /content/Yolov5_DeepSort_Pytorch/yolov5/weights/crowdhuman_yolov5m.pt --source out.avi --save-vid
+
+# Конвертация AVI->MP4 (для визуализации в colab)
+!ffmpeg -i /content/Yolov5_DeepSort_Pytorch/runs/track/exp/out.avi output.mp4
+
+--------------------
+# Импорт библиотек
+from IPython.display import HTML
+from base64 import b64encode
+
+# в Colab'е  Чтение видеофайла и кодирование в base64
+mp4 = open('output.mp4','rb').read()
+data_url = "data:video/mp4;base64," + b64encode(mp4).decode()
+-----------------------
+# Вывод видео в Colab'е
+HTML("""
+<video controls>
+      <source src="%s" type="video/mp4">
+</video>
+""" % data_url)
+--------------------------------
+
+
+
+
+
+
+
